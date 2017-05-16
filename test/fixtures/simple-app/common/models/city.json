@@ -1,0 +1,28 @@
+{
+  "name": "City",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "people": {
+      "type": "hasMany",
+      "model": "Person",
+      "foreignKey": "cityId"
+    },
+    "country": {
+      "type": "belongsTo",
+      "model": "Country",
+      "foreignKey": "countryId"
+    }
+  },
+  "methods": {},
+  "mixins": {}
+}

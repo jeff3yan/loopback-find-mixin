@@ -1,0 +1,27 @@
+{
+  "name": "Country",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "cities": {
+      "type": "hasMany",
+      "model": "City",
+      "foreignKey": "countryId"
+    }
+  },
+  "methods": {},
+  "mixins": {
+    "Find": {
+      "remotes": ["find"]
+    }
+  }
+}
