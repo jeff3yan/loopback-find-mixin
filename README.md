@@ -17,7 +17,7 @@ This mixin assists with option 2, which is going to be perfectly performant in s
 Any time that you would think it's fine to do multiple queries in the opposite direction anyway, then it would be reasonable to use.
 
 # Install
-`npm install --save loopback-find`
+`npm install --save loopback-find-mixin`
 
 # Server Config
 ```
@@ -31,7 +31,7 @@ Any time that you would think it's fine to do multiple queries in the opposite d
     ],
     "mixins": [
       "loopback/common/mixins",
-      "../node_modules/loopback-find",
+      "../node_modules/loopback-find-mixin",
       "../common/mixins"
     ]
   }
