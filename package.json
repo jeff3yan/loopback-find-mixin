@@ -1,12 +1,13 @@
 {
   "name": "loopback-find-mixin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
     "prepublish": "npm run build",
     "build": "babel src --presets babel-preset-es2015 --out-dir dist",
-    "test": "cross-env NODE_ENV=test nyc mocha test/**/*.test.js --recursive --reporter spec"
+    "pretest": "npm run build",
+    "test": "cross-env NODE_ENV=test mocha test/**/*.test.js --recursive --reporter spec"
   },
   "keywords": [
     "loopback",

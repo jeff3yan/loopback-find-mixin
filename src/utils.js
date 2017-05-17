@@ -50,7 +50,7 @@ module.exports.transformRequireFilter = (ctx, instance, next) => {
  * @param {String} relationPath The relation path from the root model e.g. "city.country"
  * @param {Object} where The loopbackJS where expression on the target model e.g. {"name": "NZ"}
  */
-const generateReverseCondition = async function(RootModel, relationPath, where = {}) {
+const generateReverseCondition = function(RootModel, relationPath, where = {}) {
   debug(`Reversing condition on [${RootModel.modelName}] with path [${relationPath}]`, where);
   const relations = relationPath.split('.');
 
@@ -81,23 +81,25 @@ const generateReverseCondition = async function(RootModel, relationPath, where =
 
   const FurthestModel = reversedModels[0];
   const include = _.get(includeScope, 'scope.include', {});
-  const results = await FurthestModel.find({ where, include });
-  const ids = results.map(item => findLeafIds(
-    item.toJSON(),
-    reversedRelations,
-    baseIdField
-  ));
+  return FurthestModel.find({ where, include })
+    .then(results => {
+      const ids = results.map(item => findLeafIds(
+        item.toJSON(),
+        reversedRelations,
+        baseIdField
+      ));
 
-  // Depending on rootRelationType, we are either interested in the "id" of the root model
-  // Or a root model which includes a foreignKey id of the most adjacent model
-  if (rootRelationType === 'hasMany') {
-    return {id: {inq: ids}};
-  } else {
-    const foreignKey = findRelationForModel(RootModel, modelsForRelations[0])
-      .details
-      .foreignKey;
-    return {[foreignKey]: {inq: _.flatMap(ids, item => item)}};
-  }
+      // Depending on rootRelationType, we are either interested in the "id" of the root model
+      // Or a root model which includes a foreignKey id of the most adjacent model
+      if (rootRelationType === 'hasMany') {
+        return {id: {inq: ids}};
+      } else {
+        const foreignKey = findRelationForModel(RootModel, modelsForRelations[0])
+          .details
+          .foreignKey;
+        return {[foreignKey]: {inq: _.flatMap(ids, item => item)}};
+      }
+    });
 };
 
 /**
